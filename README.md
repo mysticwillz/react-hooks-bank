@@ -1,4 +1,4 @@
-# 📆 react-hooks-bank
+# 🖖 react-hooks-bank
 
 A collection of **powerful, reusable custom React hooks** for complex, non-trivial interactions that go beyond React’s native features.
 
@@ -8,15 +8,15 @@ Built with performance and developer ergonomics in mind, these hooks help you ac
 
 ## 🚀 Features
 
-- 🌐 Fully typed with **TypeScript**
-- 🧠 Designed for **advanced and non-standard use cases**
-- 🧹 Pluggable and composable React hooks
-- 🔧 Minimal dependencies, lightweight and tree-shakable
-- 🔓 Open-source and community-driven
+* 🌐 Fully typed with **TypeScript**
+* 🧠 Designed for **advanced and non-standard use cases**
+* 🧹 Pluggable and composable React hooks
+* 🔧 Minimal dependencies, lightweight and tree-shakable
+* 🔓 Open-source and community-driven
 
 ---
 
-## 📆 Installation
+## 🖖 Installation
 
 ```bash
 npm install react-hooks-bank
@@ -30,7 +30,7 @@ yarn add react-hooks-bank
 
 ---
 
-## 🧚 Usage Example (General)
+## 🧹 Usage Example (General)
 
 Import the hooks you need and use them in your components:
 
@@ -54,91 +54,239 @@ const MyComponent = () => {
 
 ---
 
-## 🧰 Available Hooks
+## 🔹 Available Hooks
 
-> Full documentation for each hook is coming soon. Below is a quick look at some included hooks:
+Click a hook to jump to detailed usage instructions:
 
-- `useInfiniteScroll`
-- `useClickOutside`
-- `useUndoRedo`
-- `useDebouncedValue`
-- `usePrevious`
-- `useEventListener`
-- `useIdle`
-- `useNetworkStatus`
-- `useMutationObserver`
-- `useGeolocation`
-
----
-
-## 📉 Hooks Reference Table
-
-A detailed overview of each hook in the library:
-
-| Hook Name             | Purpose/Function                                        | Returns                 | Parameters                                                                                                                                                          |
-| --------------------- | ------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `useInfiniteScroll`   | Trigger callback on scroll near bottom                  | `boolean` (isLoading)   | `callback: () => void` (Required) - Function to call <br> `threshold?: number` - Distance in px from bottom (default: 100)                                          |
-| `useClickOutside`     | Detect clicks outside a specified element               | `void`                  | `ref: RefObject` (Required) - DOM ref to monitor <br> `callback: () => void` (Required) - Function to call when clicked outside                                     |
-| `useUndoRedo`         | Manage undo/redo state for any value                    | `{ state, undo, redo }` | `initialState: any` (Required) - The initial value to track                                                                                                         |
-| `useDebouncedValue`   | Debounce a value and return updated version             | `value`                 | `value: any` (Required) - Input value to debounce <br> `delay: number` (Required) - Debounce delay in ms                                                            |
-| `usePrevious`         | Track and return previous value                         | `previousValue`         | `value: any` (Required) - Value to track                                                                                                                            |
-| `useEventListener`    | Add event listener to target and clean up automatically | `void`                  | `event: string` (Required) - Event name <br> `handler: fn` (Required) - Function handler <br> `element?: HTMLElement` (Optional) - Target element (default: window) |
-| `useIdle`             | Detect if user is idle after a timeout                  | `boolean` (isIdle)      | `timeout: number` (Required) - Idle timeout in ms                                                                                                                   |
-| `useNetworkStatus`    | Monitor online/offline status                           | `boolean` (isOnline)    | None                                                                                                                                                                |
-| `useMutationObserver` | Observe DOM mutations                                   | `void`                  | `ref: RefObject` (Required) - Target element <br> `callback: MutationCallback` (Required) - Called on mutation <br> `options?: MutationObserverInit` (Optional)     |
-| `useGeolocation`      | Track user geolocation                                  | `{ coords, error }`     | `options?: PositionOptions` (Optional) - Navigator API options                                                                                                      |
+* [`useClickOutside`](#useclickoutside)
+* [`useDebouncedValue`](#usedebouncedvalue)
+* [`useFetch`](#usefetch)
+* [`useGeolocation`](#usegeolocation)
+* [`useHover`](#usehover)
+* [`useInfiniteScroll`](#useinfinitescroll)
+* [`useIntersectionObserver`](#useintersectionobserver)
+* [`useLockBodyScroll`](#uselockbodyscroll)
+* [`useNetworkStatus`](#usenetworkstatus)
+* [`useThrottle`](#usethrottle)
+* [`useDeviceInfo`](#usedeviceinfo)
+* [`useOrientation`](#useorientation)
 
 ---
 
-## 🧠 Hook Spotlight: `useInfiniteScroll`
+## 🧠 How to Use Each Hook
 
-Trigger a callback when the user scrolls near the bottom of the page — useful for infinite loading experiences.
+### `useClickOutside`
 
-### 🔧 Signature
+**Purpose**: Detect clicks outside a specific DOM element.
 
-```ts
-useInfiniteScroll(callback: () => void, threshold?: number): boolean
-```
-
-### 🗓️ Parameters
-
-| Name        | Type         | Required | Default | Description                                                  |
-| ----------- | ------------ | -------- | ------- | ------------------------------------------------------------ |
-| `callback`  | `() => void` | ✅       | —       | Function to call when scroll reaches the threshold           |
-| `threshold` | `number`     | ❌       | `100`   | Distance (in pixels) from the bottom to trigger the callback |
-
-### 📄 Returns
-
-- `isLoading` (`boolean`) — `true` while the callback is being triggered (with a small debounce delay).
-
-### 📆 Example
+**How to use**:
 
 ```tsx
-import { useInfiniteScroll } from "react-hooks-bank";
-
-const InfiniteList = () => {
-  const [items, setItems] = useState([...initialItems]);
-
-  const isLoading = useInfiniteScroll(() => {
-    fetch("/api/more-items")
-      .then((res) => res.json())
-      .then((newItems) => {
-        setItems((prev) => [...prev, ...newItems]);
-      });
-  });
-
-  return (
-    <div>
-      {items.map((item, idx) => (
-        <p key={idx}>{item.name}</p>
-      ))}
-      {isLoading && <p>Loading more...</p>}
-    </div>
-  );
-};
+const ref = useRef(null);
+useClickOutside(ref, () => console.log("Clicked outside!"));
 ```
 
+**Returns**: `void`
+
+**Parameters**:
+
+* `ref: RefObject<HTMLElement>` - **Required**: Element to monitor
+* `callback: () => void` - **Required**: Triggered when clicking outside
+
 ---
+
+### `useDebouncedValue`
+
+**Purpose**: Return a debounced version of a value.
+
+**How to use**:
+
+```tsx
+const debouncedValue = useDebouncedValue(searchTerm, 500);
+```
+
+**Returns**: `any` – Debounced value
+
+**Parameters**:
+
+* `value: any` – **Required**: The value to debounce
+* `delay: number` – **Required**: Delay in ms
+
+---
+
+### `useFetch`
+
+**Purpose**: Fetch data with loading and error state.
+
+**How to use**:
+
+```tsx
+const { data, loading, error } = useFetch('/api/data');
+```
+
+**Returns**: `{ data, loading, error }`
+
+**Parameters**:
+
+* `url: string` – **Required**: Endpoint URL
+* `options?: RequestInit` – Optional fetch options
+
+---
+
+### `useGeolocation`
+
+**Purpose**: Track user's geolocation.
+
+**How to use**:
+
+```tsx
+const { coords, error } = useGeolocation();
+```
+
+**Returns**: `{ coords, error }`
+
+**Parameters**:
+
+* `options?: PositionOptions` – Optional navigator geolocation options
+
+---
+
+### `useHover`
+
+**Purpose**: Detect hover state on an element.
+
+**How to use**:
+
+```tsx
+const { ref, hovered } = useHover();
+```
+
+**Returns**: `{ ref, hovered }`
+
+**Parameters**: None
+
+---
+
+### `useInfiniteScroll`
+
+**Purpose**: Trigger callback when scrolled to bottom threshold.
+
+**How to use**:
+
+```tsx
+const isLoading = useInfiniteScroll(() => loadMoreItems());
+```
+
+**Returns**: `boolean` – `true` if loading
+
+**Parameters**:
+
+* `callback: () => void` – **Required**
+* `threshold?: number` – Distance in px to bottom (default: 100)
+
+---
+
+### `useIntersectionObserver`
+
+**Purpose**: Observe if an element is visible in viewport.
+
+**How to use**:
+
+```tsx
+const { ref, entry } = useIntersectionObserver();
+```
+
+**Returns**: `{ ref, entry }`
+
+**Parameters**:
+
+* `options?: IntersectionObserverInit`
+
+---
+
+### `useLockBodyScroll`
+
+**Purpose**: Prevent body scroll when active.
+
+**How to use**:
+
+```tsx
+useLockBodyScroll();
+```
+
+**Returns**: `void`
+
+**Parameters**: None
+
+---
+
+### `useNetworkStatus`
+
+**Purpose**: Detect online/offline network status.
+
+**How to use**:
+
+```tsx
+const isOnline = useNetworkStatus();
+```
+
+**Returns**: `boolean`
+
+**Parameters**: None
+
+---
+
+### `useThrottle`
+
+**Purpose**: Throttle a value change over time.
+
+**How to use**:
+
+```tsx
+const throttled = useThrottle(value, 300);
+```
+
+**Returns**: `any` – Throttled value
+
+**Parameters**:
+
+* `value: any` – **Required**
+* `delay: number` – **Required**
+
+---
+
+### `useDeviceInfo`
+
+**Purpose**: Retrieve device OS, browser, and screen info.
+
+**How to use**:
+
+```tsx
+const { os, browser, screen } = useDeviceInfo();
+```
+
+**Returns**: `{ os, browser, screen }`
+
+**Parameters**: None
+
+---
+
+### `useOrientation`
+
+**Purpose**: Track screen orientation and angle.
+
+**How to use**:
+
+```tsx
+const { angle, type } = useOrientation();
+```
+
+**Returns**: `{ angle: number, type: string }`
+
+**Parameters**: None
+
+---
+
 
 ## 🛠 Local Development
 
@@ -177,8 +325,8 @@ This project is licensed under the MIT License
 
 Built with ❤️ by [Eze Williams Ezebuilo](https://github.com/mysticwillz)
 
-- Twitter: [@mysticwillz](https://twitter.com/mysticwillz)
-- LinkedIn: [mysticwillz](https://linkedin.com/in/mysticwillz)
+* Twitter: [@mysticwillz](https://twitter.com/mysticwillz)
+* LinkedIn: [mysticwillz](https://linkedin.com/in/mysticwillz)
 
 ---
 
