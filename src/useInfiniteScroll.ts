@@ -14,8 +14,13 @@ export function useInfiniteScroll(
       ) {
         if (!isLoading) {
           setIsLoading(true);
-          callback();
-          setTimeout(() => setIsLoading(false), 500); // mock delay
+          try {
+            callback();
+          } catch (error) {
+            console.error("Error in callback:", error);
+          } finally {
+            setIsLoading(false);
+          }
         }
       }
     };
