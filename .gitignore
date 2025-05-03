@@ -1,1 +1,2 @@
 .echo "lib\nnode_modules\ndist" > .gitignore
+/node_modules
