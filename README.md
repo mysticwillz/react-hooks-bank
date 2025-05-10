@@ -70,6 +70,7 @@ Click a hook to jump to detailed usage instructions:
 * [`useThrottle`](#usethrottle)
 * [`useDeviceInfo`](#usedeviceinfo)
 * [`useOrientation`](#useorientation)
+* [`useCopyToClipboard`](#usecopytoclipboard)
 
 ---
 
@@ -282,6 +283,22 @@ const { angle, type } = useOrientation();
 ```
 
 **Returns**: `{ angle: number, type: string }`
+
+**Parameters**: None
+
+---
+
+### `useCopyToClipboard`
+
+**Purpose**: Simplifies copying text to the user’s clipboard and reporting success/failure.
+
+**How to use**:
+
+```tsx
+const [ copy, isCopied ] = useCopyToClipboard();
+```
+
+**Returns**: `[ copy: (text: string) => Promise<boolean>, isCopied: boolean ]`
 
 **Parameters**: None
 
